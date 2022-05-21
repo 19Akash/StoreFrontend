@@ -2,7 +2,9 @@ import axios from 'axios';
 import React ,{useState} from 'react';
 import "./Login.css"
 import { useNavigate } from 'react-router-dom';
-const Login =()=>{
+
+
+const Login =(props)=>{
 
         const navigate=useNavigate();
         const [user,setUser]=useState({
@@ -12,7 +14,6 @@ const Login =()=>{
     
         const handleChange=(e)=>{
             const {name,value}=e.target;
-    
             setUser({
                 ...user,
                 [name] : value
@@ -25,9 +26,9 @@ const Login =()=>{
             {
                 await axios.post("http://localhost:1000/auth/signin",user)
                 .then(res=>{
-                    console.log(res.data.data)
                     if(res.data.data)
                     {
+                        props.handleUserData(res.data.data);
                         navigate('/home');
                     }
                 });

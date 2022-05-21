@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "./Register.css"
 import axios from 'axios';
 
-const Register =()=>{
+const Register =(props)=>{
     const navigate = useNavigate();
     const [user,setUser]=useState({
         name:"",
@@ -30,11 +30,13 @@ const Register =()=>{
            .then(res=>{
                 if(res.data.data)
                 {
+                  props.handleUserData(res.data.data);
                   navigate('/home');
                 }
                 else if(res.data.message)
                 {
                     alert("User is already created")
+                    navigate('/login');
                 }
            }); 
        }
