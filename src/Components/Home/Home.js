@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "./Home.css"
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.jpeg'
-import { BsSearch } from "react-icons/bs";
+import logo from '../assets/logo.jpeg';
+import Books from '../Books/Books.js';
+import axios from 'axios';
 
 const Home =(props)=>{
      const navigate = useNavigate();
@@ -10,10 +11,21 @@ const Home =(props)=>{
      const [itemCount,setItemCount] = useState(0)
      const [userDrop,setUserDrop] = useState("none");
      const [userFlag,setUserFlag] = useState("false");
+     const [booksData,setBooksData]=useState("");
 
 
+     useEffect(()=>{ 
+         if(booksData==="")
+         {
+              async function fetchData(){
+               await axios.request(`https://api.itbook.store/1.0/search/new`)
+                .then(res=>{ 
+                        setBooksData(res.data.books);
+                })
+            }
+            fetchData();
+         }
 
-     useEffect(()=>{
          if(props.user)
          {
           setUsername(props.user.name);
@@ -21,12 +33,26 @@ const Home =(props)=>{
          else{
              setUsername("User")
          }
-     },[username])
+         },[])
+   const  handleFilter = async (value)=>{
+        let data="";
+            await axios.request(`https://api.itbook.store/1.0/search/${value}`)
+             .then(res=>{ 
+                     console.log("state is updated")
+                     data=res.data.books;
+                    
+             })
+             setBooksData(data);
+         }
+    
 
 
-     const handleLogout=()=>{
+
+
+    const handleLogout=()=>{
         navigate('/login')
     }
+
     const handleUserClick=()=>{
 
         if(username==="User")
@@ -46,7 +72,6 @@ const Home =(props)=>{
             }
         }
     }
-
     return(
         <div>
             <div className='header'>
@@ -79,7 +104,17 @@ const Home =(props)=>{
                     }
                 </div> 
             </div>
-           
+            <div className='navbar'>
+                <h1><i class="fa fa-bars" aria-hidden="true"></i></h1>
+                <h3 onClick={()=>handleFilter("new")}>New Arrival</h3>
+                <h3 onClick={()=>handleFilter("award")}>Award Winning</h3>
+                <h3 onClick={()=>handleFilter("science")}>Science</h3>
+                <h3 onClick={()=>handleFilter("story")}>Story</h3>
+                <h3 onClick={()=>handleFilter("fiction")}>Fixtion</h3>
+            </div>
+            {
+                (booksData!=="")? <Books  booksData={booksData}/> : console.log("hello")
+            }                  
         </div>
     )
 }

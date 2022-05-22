@@ -31,6 +31,9 @@ const Login =(props)=>{
                         props.handleUserData(res.data.data);
                         navigate('/home');
                     }
+                    else if(res.data.message){
+                        alert(res.data.message)
+                    }
                 });
             }
             else{

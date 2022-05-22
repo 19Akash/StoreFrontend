@@ -1,0 +1,9 @@
+.booksView{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-left: 2rem;
+}
+.books{
+    width: 88rem;
+}
