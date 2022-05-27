@@ -8,13 +8,14 @@ import axios from 'axios';
 const Home =(props)=>{
      const navigate = useNavigate();
      const [username,setUsername] = useState("User")
-     const [itemCount,setItemCount] = useState(0)
      const [userDrop,setUserDrop] = useState("none");
      const [userFlag,setUserFlag] = useState("false");
      const [booksData,setBooksData]=useState("");
-
+     const [cartCount,setCartCount]=useState(0);
+     
 
      useEffect(()=>{ 
+         console.log(props.data)
          if(booksData==="")
          {
               async function fetchData(){
@@ -34,19 +35,22 @@ const Home =(props)=>{
              setUsername("User")
          }
          },[])
+
+
+
    const  handleFilter = async (value)=>{
         let data="";
             await axios.request(`https://api.itbook.store/1.0/search/${value}`)
              .then(res=>{ 
-                     console.log("state is updated")
                      data=res.data.books;
                     
              })
              setBooksData(data);
          }
     
-
-
+    const checkCount=(value)=>{
+          setCartCount(c=>c+value)
+     }
 
 
     const handleLogout=()=>{
@@ -72,8 +76,16 @@ const Home =(props)=>{
             }
         }
     }
+
+    const handleCartClick=()=>{
+         navigate('/cart');
+    }
+
     return(
         <div>
+            {
+                console.log(booksData)
+            }
             <div className='header'>
                 <img src={logo} alt='logo'/>
                 <div className="search">
@@ -94,27 +106,29 @@ const Home =(props)=>{
                    }
                 </div> 
                 <div style={{"display":"flex"}}> 
-                    <h1><i class="fa fa-shopping-cart cartbtn" aria-hidden="true"></i></h1>
+                    <h1 onClick={handleCartClick}><i class="fa fa-shopping-cart cartbtn" aria-hidden="true"></i></h1>
                     {
-                       (itemCount!==0)? 
+                       (props.count)? 
                        <div className='itemcount'>
-                            <h6>{itemCount}</h6>
+                            <h6>{props.count}</h6>
                         </div> 
-                        : ""
+                        :""
                     }
                 </div> 
             </div>
             <div className='navbar'>
                 <h1><i class="fa fa-bars" aria-hidden="true"></i></h1>
-                <h3 onClick={()=>handleFilter("new")}>New Arrival</h3>
+                <h3 onClick={()=>handleFilter("new")}><i>New Arrival</i></h3>
                 <h3 onClick={()=>handleFilter("award")}>Award Winning</h3>
                 <h3 onClick={()=>handleFilter("science")}>Science</h3>
                 <h3 onClick={()=>handleFilter("story")}>Story</h3>
-                <h3 onClick={()=>handleFilter("fiction")}>Fixtion</h3>
+                <h3 onClick={()=>handleFilter("fiction")}>Fiction</h3>
             </div>
-            {
-                (booksData!=="")? <Books  booksData={booksData}/> : console.log("hello")
-            }                  
+            <div className='books'>
+                {
+                    (booksData!=="")? <Books  booksData={booksData} bookList={props.cartList} checkCount={checkCount} data={props.data}/> : ""
+                }   
+            </div>               
         </div>
     )
 }

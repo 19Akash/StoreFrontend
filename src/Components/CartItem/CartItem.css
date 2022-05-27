@@ -1,0 +1,58 @@
+.cartItem{
+    display: flex;
+    background-color: white;
+    margin-top: 2rem;
+    text-align: center;
+    align-items: center;
+    height: 4rem;
+    border-radius: 2rem;
+    
+}
+.bookname{
+    position: relative fixed;
+    margin-left: 2rem;
+    width: 40rem;
+    text-align: left;
+    
+}
+
+
+.qntbtn{
+    position: relative;
+    margin-left: 0rem;
+    margin-top: -1rem;
+}
+.qntbtn> button{
+    position: absolute;   
+}
+.qntbtnp{
+    margin-left: 3.5rem;
+}
+.qntbtns{
+    margin-left: -1.29rem;
+}
+.qntbtn> input{
+    position: absolute;
+}
+.qntbtninput{
+   width: 3rem;
+   text-align: center;
+}
+.price{
+    position: relative;
+    margin-left: 12rem;
+    margin-top: -1rem;
+}
+.price> .textPrice{
+    position: absolute;
+     
+     
+}
+.price> .totalPrice{
+    display: flex;
+    position: absolute;
+    margin-left:6rem;
+}
+.img{
+    margin-left: 3rem;
+}
